@@ -1,0 +1,138 @@
+name: fullstack
+
+x-base: &base
+  env_file: .env
+  restart: no
+  networks:
+    - network
+
+services:
+  packages:
+    <<: *base
+    image: fullstack/packages
+    pull_policy: build
+    build:
+      dockerfile: Dockerfile.base
+
+  nginx:
+    <<: *base
+    image: nginx
+    ports:
+      - "0.0.0.0:4205:80"
+    environment:
+      PORT: 4205
+      DOMAIN: $APP_DOMAIN
+      FRONT_DOMAIN: 172.22.0.11:4200
+      SERVER_DOMAIN: 172.22.0.12:3000
+      NGINX_ENTRYPOINT_QUIET_LOGS: 1
+    volumes:
+      - ./nginx-dev.conf.template:/etc/nginx/templates/default.conf.template:ro
+    command: [ "nginx", "-g", "daemon off;" ]
+    healthcheck: &healthcheck
+      test: [ "CMD", "service", "nginx", "status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+    links:
+      - front
+      - server
+    networks:
+      network:
+        ipv4_address: 172.22.0.10
+  front:
+    <<: *base
+    image: fullstack/front
+    pull_policy: build
+    container_name: fullstack-front
+    build:
+      context: ./apps/front
+      dockerfile: Dockerfile.dev
+      target: development
+      additional_contexts:
+        fullstack/packages: "service:packages"
+    environment:
+      VITE_PORT: 4200
+      VITE_APP_DOMAIN: $APP_DOMAIN
+    networks:
+      network:
+        ipv4_address: 172.22.0.11
+    develop:
+      watch:
+        - path: apps/front
+          action: sync
+          target: /app/front
+          ignore:
+            - apps/front/node_modules/
+        - path: ./package.json
+          action: rebuild
+
+  server:
+    <<: *base
+    image: fullstack/server
+    pull_policy: build
+    build:
+      context: ./apps/server
+      dockerfile: Dockerfile.dev
+      target: development
+      additional_contexts:
+        fullstack/packages: "service:packages"
+    environment:
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+    networks:
+      network:
+        ipv4_address: 172.22.0.12
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      <<: *healthcheck
+      test: [ 'CMD-SHELL', 'netstat -an | grep 3000 > /dev/null; if [ 0 != $? ]; then exit 1; fi;' ]
+    develop:
+      watch:
+        - path: apps/server
+          action: sync
+          target: /app/server/
+          ignore:
+            - apps/server/node_modules/
+        - path: ./package.json
+          action: rebuild
+
+  postgres:
+    <<: *base
+    image: postgres:16-alpine
+    volumes:
+      - postgres_data:/data/postgres
+    ports:
+      - '0.0.0.0:${POSTGRES_PORT:-5432}:5432'
+    networks:
+      network:
+        ipv4_address: 172.22.0.13
+    healthcheck:
+      <<: *healthcheck
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+
+  redis:
+    <<: *base
+    image: bitnami/redis:latest
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+    command: [ '/opt/bitnami/scripts/redis/run.sh', '--maxmemory', '200mb' ]
+    networks:
+      network:
+        ipv4_address: 172.22.0.14
+    healthcheck:
+      <<: *healthcheck
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  network:
+    ipam:
+      config:
+        - subnet: 172.22.0.0/24

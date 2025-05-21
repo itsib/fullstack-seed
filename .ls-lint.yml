@@ -1,0 +1,28 @@
+ls:
+  ./{libs,apps}/**:
+    .dir: kebab-case
+    .js: regex:^[a-z_]{1}[a-z0-9.-]+
+    .ts: regex:^[a-z_]{1}[a-z0-9.-]+
+    .tsx: regex:^[a-z_]{1}[a-z0-9.-]+
+    .d.ts: regex:^[a-z_]{1}[a-z0-9.-]+
+    .scss: regex:^[a-z_]{1}[a-z0-9.-]+
+
+    .html: regex:^[a-z0-9.-]+
+    .json: regex:^[a-z0-9.-]+
+    .xml: regex:^[a-z0-9.-]+
+
+    .svg: regex:^[a-z0-9.-]+
+    .png: regex:^[a-z0-9.-]+
+    .jpg: regex:^[a-z0-9.-]+
+    .ico: regex:^[a-z0-9.-]+
+ignore:
+  - .git
+  - .github
+  - .nx
+  - .vscode
+  - dist
+  - dev-dist
+  - '**/node_modules'
+  - '**/fonts'
+  - '**/prisma/migrations'
+  - '**/registerSW.js'

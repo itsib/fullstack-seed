@@ -1,0 +1,55 @@
+@font-face {
+    font-family: "SFProText";
+    font-style: normal;
+    font-weight: 700;
+    font-stretch: 98%;
+    font-display: swap;
+    src: url("/static/font/SFProText-Bold.eot?07711936112808588#iefix") format("embedded-opentype"),
+         url("/static/font/SFProText-Bold.woff2?07711936112808588") format("woff2"),
+         url("/static/font/SFProText-Bold.woff?07711936112808588") format("woff"),
+         url("/static/font/SFProText-Bold.ttf?07711936112808588") format("truetype");
+}
+@font-face {
+    font-family: "SFProText";
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: 98%;
+    font-display: swap;
+    src: url("/static/font/SFProText-Light.eot?07711936112808588#iefix") format("embedded-opentype"),
+         url("/static/font/SFProText-Light.woff2?07711936112808588") format("woff2"),
+         url("/static/font/SFProText-Light.woff?07711936112808588") format("woff"),
+         url("/static/font/SFProText-Light.ttf?07711936112808588") format("truetype");
+}
+@font-face {
+    font-family: "SFProText";
+    font-style: normal;
+    font-weight: 500;
+    font-stretch: 98%;
+    font-display: swap;
+    src: url("/static/font/SFProText-Medium.eot?07711936112808588#iefix") format("embedded-opentype"),
+         url("/static/font/SFProText-Medium.woff2?07711936112808588") format("woff2"),
+         url("/static/font/SFProText-Medium.woff?07711936112808588") format("woff"),
+         url("/static/font/SFProText-Medium.ttf?07711936112808588") format("truetype");
+}
+@font-face {
+    font-family: "SFProText";
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: 98%;
+    font-display: swap;
+    src: url("/static/font/SFProText-Regular.eot?07711936112808588#iefix") format("embedded-opentype"),
+         url("/static/font/SFProText-Regular.woff2?07711936112808588") format("woff2"),
+         url("/static/font/SFProText-Regular.woff?07711936112808588") format("woff"),
+         url("/static/font/SFProText-Regular.ttf?07711936112808588") format("truetype");
+}
+@font-face {
+    font-family: "SFProText";
+    font-style: normal;
+    font-weight: 600;
+    font-stretch: 98%;
+    font-display: swap;
+    src: url("/static/font/SFProText-Semibold.eot?07711936112808588#iefix") format("embedded-opentype"),
+         url("/static/font/SFProText-Semibold.woff2?07711936112808588") format("woff2"),
+         url("/static/font/SFProText-Semibold.woff?07711936112808588") format("woff"),
+         url("/static/font/SFProText-Semibold.ttf?07711936112808588") format("truetype");
+}

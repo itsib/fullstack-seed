@@ -1,0 +1,72 @@
+name: seed
+
+x-base: &base
+  env_file: .env
+  restart: on-failure
+  networks:
+    - seed-net
+
+services:
+  server:
+    <<: *base
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    develop:
+      watch:
+        - path: ./
+          action: sync
+          target: /node/app
+          ignore:
+            - node_modules/
+        - path: ./package-lock.json
+          action: rebuild
+          target: /node/app/package-lock.json
+
+  postgres:
+    <<: *base
+    container_name: postgres
+    image: postgres:16-alpine
+    volumes:
+      - postgres_data:/data/postgres
+    ports:
+      - '0.0.0.0:${POSTGRES_PORT}:${POSTGRES_PORT}'
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}' ]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+
+  redis:
+    <<: *base
+    container_name: redis
+    image: bitnami/redis:latest
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+    ports:
+      - '0.0.0.0:${REDIS_PORT_NUMBER}:6379'
+    command: [ '/opt/bitnami/scripts/redis/run.sh', '--maxmemory', '200mb' ]
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  seed-net:
+    name: seed-net
+    driver: bridge
+    attachable: true
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"

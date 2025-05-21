@@ -1,0 +1,22 @@
+FROM fullstack/packages AS base
+ENV NODE_ENV=build
+
+USER node
+WORKDIR /app/server
+
+COPY --chown=node:node package.json package-lock.json ./
+RUN npm install --save /app/packages/utils/ && \
+    npm ci
+
+FROM base AS development
+
+ENV NODE_ENV=development
+
+USER node
+WORKDIR /app/server
+
+COPY --chown=node:node . .
+
+ENTRYPOINT []
+
+CMD ["sh", "-c", "node node_modules/.bin/nest start --builder=webpack --watch"]

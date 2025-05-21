@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "module": "commonjs",
+
+    "strict": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/prisma/client"
+    ],
+    "paths": {
+      "@app/types": ["./src/types/index.ts"],
+      "@app/prisma": ["./src/prisma/index.ts"],
+      "@app/common/*": ["./src/common/*"],
+    }
+  },
+  "references": [{ "path": "./tsconfig.build.json"}, { "path": "./tsconfig.spec.json" }]
+}

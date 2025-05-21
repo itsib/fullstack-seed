@@ -1,0 +1,14 @@
+{
+  "name": "@fullstack/root",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "docker compose up --watch && docker compose down",
+    "stop": "docker compose down"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
+}

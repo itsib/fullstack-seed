@@ -1,0 +1,56 @@
+{
+  "name": "@app/utils",
+  "description": "Common libraries for share for all applications",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "vite build && tsc --emitDeclarationOnly --declaration --project tsconfig.lib.json",
+    "doc": "tsx scripts/docs.cjs",
+    "test": "vitest"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/types.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.mjs"
+    },
+    "./converters": {
+      "types": "./dist/converters/index.d.ts",
+      "import": "./dist/converters.mjs",
+      "require": "./dist/converters.js",
+      "default": "./dist/converters.mjs"
+    },
+    "./serializer": {
+      "types": "./dist/serializer/index.d.ts",
+      "import": "./dist/serializer.mjs",
+      "require": "./dist/serializer.js",
+      "default": "./dist/serializer.mjs"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils.mjs",
+      "require": "./dist/utils.js",
+      "default": "./dist/utils.mjs"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "glob": "^11.0.2",
+    "tsdoc-markdown": "^1.2.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.3.3",
+    "vitest": "^3.1.2"
+  },
+  "dependencies": {
+    "lz-string": "^1.5.0",
+    "tslib": "^2.3.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-musl": "~4.40.0"
+  }
+}

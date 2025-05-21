@@ -1,0 +1,23 @@
+FROM node:22-alpine AS base
+ENV NODE_ENV=development
+
+RUN apk add --no-cache libc6-compat g++ make py3-pip && \
+    npm i -g npm@latest
+
+USER node
+WORKDIR /app
+
+COPY --chown=node:node packages /app/packages
+
+RUN <<-EOF
+	for pkg_path in ./packages/*; do
+	  pkg_name="${pkg_path##*/}"
+	  echo "$pkg_name"
+	  cd "/app/packages/${pkg_name}"
+	  npm install --no-audit --no-fund --include prod --include dev
+	  npm run build
+	  cd /app
+	done
+
+EOF
+

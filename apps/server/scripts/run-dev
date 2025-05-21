@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cd "$( cd "$(dirname "$0")" && pwd )/.."
+
+FLAGS=""
+
+if [ -f "./.env" ]; then
+  FLAGS="$FLAGS --env-file .env"
+fi
+
+node ./node_modules/.bin/prisma generate --schema ./prisma/schema.prisma
+
+node ./node_modules/.bin/nest start --builder=webpack --watch "$FLAGS"

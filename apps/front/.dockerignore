@@ -1,0 +1,9 @@
+node_modules
+.idea
+.npm
+dist
+.dockerignore
+.env*
+.gitignore
+compose.yaml
+Dockerfile

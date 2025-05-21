@@ -1,0 +1,60 @@
+server {
+    listen                      80;
+
+    ssl_protocols               TLSv1.2 TLSv1.3;
+    ssl_ciphers                 HIGH:!aNULL:!MD5;
+
+    autoindex                   off;
+    expires                     off;
+    access_log                  off;
+    proxy_buffering             off;
+
+    sendfile                    on;
+    send_timeout                300s;
+    client_max_body_size        60m;
+    client_body_buffer_size     60m;
+
+    location ~ ^/manifest\.(json|webmanifest)$ {
+        set $front_domain ${FRONT_DOMAIN};
+
+        add_header  'Access-Control-Allow-Origin'   '*';
+        add_header  'Access-Control-Allow-Methods'  'GET';
+        add_header  'Access-Control-Allow-Headers'  'X-Requested-With, Content-Type, Authorization';
+
+        proxy_pass          'http://$front_domain';
+        proxy_redirect      off;
+        proxy_http_version  1.1;
+        proxy_set_header    Host                $host;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+    }
+
+    location ~ ^/(?:api|health|docs|static).* {
+        set $server_domain ${SERVER_DOMAIN};
+
+        proxy_pass            http://$server_domain;
+        proxy_http_version    1.1;
+        proxy_set_header      Host                $host;
+        proxy_set_header      X-Real-IP           $remote_addr;
+        proxy_set_header      X-Forwarded-For     $proxy_add_x_forwarded_for;
+    }
+
+    location / {
+        set $front_domain ${FRONT_DOMAIN};
+
+        proxy_pass          'http://$front_domain';
+        proxy_http_version  1.1;
+        proxy_set_header    Upgrade             $http_upgrade;
+        proxy_set_header    Connection          $http_connection;
+        proxy_set_header    Host                $host;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+        proxy_hide_header   Access-Control-Allow-Origin;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+
+    location = /50x.html {
+        root        /usr/share/nginx/html;
+    }
+}

@@ -1,0 +1,18 @@
+{
+  "arrowParens": "avoid",
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "printWidth": 180,
+  "quoteProps": "consistent",
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false,
+  "overrides": [
+    {
+      "files": "**/*.json",
+      "options": { "parser": "json" }
+    }
+  ]
+}
