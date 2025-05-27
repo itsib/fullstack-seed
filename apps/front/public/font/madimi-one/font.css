@@ -1,0 +1,11 @@
+@font-face {
+    font-family: "MadimiOne";
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: 98%;
+    font-display: swap;
+    src: url("/font/madimi-one/madimi-one.eot#iefix") format("embedded-opentype"),
+         url("/font/madimi-one/madimi-one.woff2") format("woff2"),
+         url("/font/madimi-one/madimi-one.woff") format("woff"),
+         url("/font/madimi-one/madimi-one.ttf") format("truetype");
+}
