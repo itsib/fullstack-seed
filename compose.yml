@@ -10,6 +10,7 @@ services:
   packages:
     <<: *base
     image: fullstack/packages
+    container_name: fs-packages
     pull_policy: build
     build:
       dockerfile: Dockerfile.base
@@ -17,6 +18,7 @@ services:
   nginx:
     <<: *base
     image: nginx
+    container_name: fs-nginx
     ports:
       - "0.0.0.0:4205:80"
     environment:
@@ -43,7 +45,7 @@ services:
     <<: *base
     image: fullstack/front
     pull_policy: build
-    container_name: fullstack-front
+    container_name: fs-front
     build:
       context: ./apps/front
       dockerfile: Dockerfile.dev
@@ -69,6 +71,7 @@ services:
   server:
     <<: *base
     image: fullstack/server
+    container_name: fs-server
     pull_policy: build
     build:
       context: ./apps/server
@@ -103,6 +106,7 @@ services:
   postgres:
     <<: *base
     image: postgres:16-alpine
+    container_name: fs-postgres
     volumes:
       - postgres_data:/data/postgres
     ports:
@@ -117,6 +121,7 @@ services:
   redis:
     <<: *base
     image: bitnami/redis:latest
+    container_name: fs-redis
     volumes:
       - 'redis_data:/bitnami/redis/data'
     command: [ '/opt/bitnami/scripts/redis/run.sh', '--maxmemory', '200mb' ]

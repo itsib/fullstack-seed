@@ -1,5 +1,5 @@
 {
-  "name": "@app/utils",
+  "name": "@fullstack/utils",
   "description": "Common libraries for share for all applications",
   "version": "0.0.1",
   "scripts": {
